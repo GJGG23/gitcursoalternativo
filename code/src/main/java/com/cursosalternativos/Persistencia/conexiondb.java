@@ -4,19 +4,23 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import javax.swing.JOptionPane;
 
+import com.cursosalternativos.Tools.paramConstantes;
+import com.cursosalternativos.Tools.propertiesTools;
+
 public class conexiondb {
 
 	Connection conn = null;
-	String url = "jdbc:postgresql://localhost:5432/DBCursosA";
-	String usuario = "postgres";
-	String clave = "root1234";
+	propertiesTools tools = new propertiesTools();
 
 	public Connection conectar() {
 		try {
 			
 			Class.forName("org.postgresql.Driver");
+			String urldb = tools.propertyValue(paramConstantes.URLBASE);
+			String userdb = tools.propertyValue(paramConstantes.USUARIOBASE); 
+			String passdb = tools.propertyValue(paramConstantes.PASSBASE);
 		
-			conn = DriverManager.getConnection(url, usuario, clave);
+			conn = DriverManager.getConnection(urldb, userdb, passdb);
 			System.out.println("Conexion a la base correctamente");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al conectar " + e, "Error", JOptionPane.ERROR_MESSAGE);

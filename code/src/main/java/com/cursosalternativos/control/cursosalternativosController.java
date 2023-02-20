@@ -14,20 +14,24 @@ import com.cursosalternativos.DTO.Request.requestActualizaMateriaDto;
 import com.cursosalternativos.DTO.Request.requestAltaMateriaDto;
 import com.cursosalternativos.DTO.Request.requestEliminaMateriaDto;
 import com.cursosalternativos.DTO.Request.requestgetcalificacionesDto;
-import com.cursosalternativos.DTO.Valida.validaAltaDto;
 import com.cursosalternativos.Services.cursosalternativosService;
 import com.cursosalternativos.Services.Impl.cursosalternativosImpl;
+import com.cursosalternativos.Tools.paramConstantes;
+import com.cursosalternativos.Tools.propertiesTools;
 
 @Path("/cursos")
 public class cursosalternativosController {
 
+	propertiesTools tools = new propertiesTools();
+	
 	@GET
 	@Path("/version")
 	@Consumes({MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_JSON})
 	public String version() {
-		String version = "Version 23.0.1";
-		return version;
+		String proyecto = tools.propertyValue(paramConstantes.NOMBRE_WS)  ;
+		String version = tools.propertyValue(paramConstantes.VERSION_SERVICE) ;
+		return proyecto + " / " + version;
 	}
 	
 	@POST

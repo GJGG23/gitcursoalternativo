@@ -1,0 +1,6 @@
+el archivo WSCursosAlternativos.properties
+debe de ir dentro de la carpeta del servidor jboss
+en la carpeta config dentro de standalone.
+ejemplo
+C:\EAP-7.4.0\standalone\config
+

@@ -8,6 +8,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.map.deser.impl.PropertyValue;
+
 import com.cursosalternativos.DTO.Request.requestActualizaMateriaDto;
 import com.cursosalternativos.DTO.Request.requestAltaMateriaDto;
 import com.cursosalternativos.DTO.Request.requestEliminaMateriaDto;
@@ -17,9 +19,13 @@ import com.cursosalternativos.DTO.Response.responseErrorMsjDto;
 import com.cursosalternativos.DTO.Response.responseListCalifacacionesDto;
 import com.cursosalternativos.DTO.Response.responseMsjDto;
 import com.cursosalternativos.Persistencia.conexiondb;
+import com.cursosalternativos.Tools.paramConstantes;
+import com.cursosalternativos.Tools.propertiesTools;
 
 
 public class cursoalternativoDAO {
+	
+	propertiesTools tools = new propertiesTools();
 
 	public Object altacalificacionDAO(requestAltaMateriaDto request) {
 
@@ -31,7 +37,7 @@ public class cursoalternativoDAO {
 
 		try {
 			Connection conn = db.conectar();
-			query = "CALL public.addcalificacion(?,?,?)";
+			query = tools.propertyValue(paramConstantes.SP_ALTACALIFICACION);
 			cstmt = conn.prepareCall(query);
 			boolean reg;
 			((CallableStatement) cstmt).setInt(1, request.getIdmateria());
@@ -64,7 +70,7 @@ public class cursoalternativoDAO {
 
 		try {
 			Connection conn = db.conectar();
-			query = "CALL public.actualizacalificacion(?,?,?)";
+			query = tools.propertyValue(paramConstantes.SP_ACTUALIZACALIFICACION);
 			cstmt = conn.prepareCall(query);
 			int reg;
 			((CallableStatement) cstmt).setInt(1, request.getIdmateria());
@@ -97,7 +103,7 @@ public class cursoalternativoDAO {
 
 		try {
 			Connection conn = db.conectar();
-			query = "CALL public.eliminacalificacion(?,?)";
+			query = tools.propertyValue(paramConstantes.SP_ELIMINACALIFICACION);
 			cstmt = conn.prepareCall(query);
 			boolean reg;
 			((CallableStatement) cstmt).setInt(1, request.getIdmateria());
@@ -129,7 +135,7 @@ public class cursoalternativoDAO {
 		try {
 			Connection conn = db.conectar();
 			conn.setAutoCommit(false);
-			query = "CALL public.readcalificaciones(?,?)";
+			query = tools.propertyValue(paramConstantes.SP_LISTADOCALIFICACIONES);
 			cstmt = conn.prepareCall(query);
 			((CallableStatement) cstmt).setInt(1, request.getIdusuario());
 			((CallableStatement) cstmt).registerOutParameter(2, Types.REF_CURSOR);
@@ -154,6 +160,7 @@ public class cursoalternativoDAO {
 			    resp.setListacalificaciones(lrc);
 			    resp.setPromedio(sumacal / nummat);
 			}
+			conn.close();
 			return resp;
 		} catch (Exception e) {
 			System.out.println("error al consular las calificaciones en la db: " + e);
